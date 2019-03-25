@@ -62,8 +62,8 @@ public class ItemModel {
         return description;
     }
 
-    public void setDescription(String descriptipn) {
-        this.description = descriptipn;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getSales() {

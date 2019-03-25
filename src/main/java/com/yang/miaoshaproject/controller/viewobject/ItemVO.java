@@ -12,7 +12,7 @@ public class ItemVO {
     //商品库存
     private  Integer stock;
     //商品描述
-    private  String descriptipn;
+    private  String description;
     //商品销量
     private  Integer sales;
     //商品图片url
@@ -50,12 +50,12 @@ public class ItemVO {
         this.stock = stock;
     }
 
-    public String getDescriptipn() {
-        return descriptipn;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptipn(String descriptipn) {
-        this.descriptipn = descriptipn;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getSales() {
