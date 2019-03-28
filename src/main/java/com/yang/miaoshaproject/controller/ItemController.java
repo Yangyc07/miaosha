@@ -52,7 +52,7 @@ public class ItemController extends BaseController {
     public CommonReturnType getItem(@RequestParam(name = "id") Integer id){
          ItemModel itemModel = itemService.getItemById(id);
          ItemVO itemVO = convertVOFromModel(itemModel);
-
+         System.out.print(itemVO.toString());
          return CommonReturnType.create(itemVO);
     }
 
