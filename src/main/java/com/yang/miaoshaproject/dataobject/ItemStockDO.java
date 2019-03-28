@@ -1,5 +1,7 @@
 package com.yang.miaoshaproject.dataobject;
 
+import org.apache.ibatis.annotations.Param;
+
 public class ItemStockDO {
     /**
      *
@@ -99,4 +101,5 @@ public class ItemStockDO {
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
+
 }
