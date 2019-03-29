@@ -4,5 +4,5 @@ import com.yang.miaoshaproject.error.BusinessException;
 import com.yang.miaoshaproject.service.model.OrderModel;
 
 public interface OrderService {
-    OrderModel create(Integer userId,Integer itemId, Integer amount) throws BusinessException;
+    OrderModel createOrder(Integer userId,Integer itemId, Integer amount) throws BusinessException;
 }
