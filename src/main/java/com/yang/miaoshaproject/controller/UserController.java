@@ -7,13 +7,12 @@ import com.yang.miaoshaproject.response.CommonReturnType;
 import com.yang.miaoshaproject.service.UserService;
 import com.yang.miaoshaproject.service.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
-import sun.security.provider.MD5;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -48,7 +47,9 @@ public class UserController extends BaseController{
         //将登陆凭证加入用户登陆成功的session中
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
+        userModel = (UserModel)httpServletRequest.getSession().getAttribute("LOGIN_USER");
         return CommonReturnType.create(null);
+
     }
 
 
