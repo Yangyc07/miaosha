@@ -1,6 +1,7 @@
 package com.yang.miaoshaproject.dao;
 
 import com.yang.miaoshaproject.dataobject.ItemDO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -55,5 +56,6 @@ public interface ItemDOMapper {
 
     List<ItemDO> listItem();
 
+    int increaseSales(@Param("id") Integer id, @Param("amount")Integer amount);
 
 }

@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount)throws BusinessException {
+    public OrderModel createOrder(Integer userId, Integer itemId,Integer promoId, Integer amount)throws BusinessException {
         //1.校验下单状态，下单的商品是否存在，用户是否存在，购买数量是否正确
         ItemModel itemModel = itemService.getItemById(itemId);
         if(itemModel == null){
@@ -54,6 +54,16 @@ public class OrderServiceImpl implements OrderService
         if(amount <= 0||amount > 99){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"数量不正确");
         }
+        //校验活动信息
+        if(promoId != null){
+            //(1)检验对应活动是否存在这个适用商品
+            if(promoId.intValue() != itemModel.getPromoModel().getId()){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"活动信息不正确");
+                //（2）校验活动是否正在进行中
+            }else if(itemModel.getPromoModel().getStatus().intValue()!=2){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"活动还未开始");
+            }
+        }
 
         //2.落单减库存（支付减库存）
         boolean result = itemService.decreaseStock(itemId,amount);
@@ -65,13 +75,23 @@ public class OrderServiceImpl implements OrderService
         orderModel.setUserId(userId);
         orderModel.setItemId(itemId);
         orderModel.setAmount(amount);
-        orderModel.setItemPrice(itemModel.getPrice());
+        if(promoId != null){
+            orderModel.setItemPrice(itemModel.getPromoModel().getPromoItemPrice());
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxx");
+        }else{
+            orderModel.setItemPrice(itemModel.getPrice());
+            System.out.println("aaaaaaaaaaaaaaaaaaaaa");
+        }
+        orderModel.setPromoId(promoId);
         orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
 
         //生成交易流水号
         orderModel.setId(generateOrderNo());
         OrderDO orderDO = convertFromOrderModel(orderModel);
         orderDOMapper.insertSelective(orderDO);
+
+        //加上商品销量
+        itemService.increaseSales(itemId,amount);
 
         //4.返回前端
         return orderModel;
@@ -83,6 +103,8 @@ public class OrderServiceImpl implements OrderService
         }
         OrderDO orderDO = new OrderDO();
         BeanUtils.copyProperties(orderModel,orderDO);
+        orderDO.setItemPrice(orderModel.getItemPrice().doubleValue());
+        orderDO.setOrderPrice(orderModel.getOrderPrice().doubleValue());
         return orderDO;
     }
 

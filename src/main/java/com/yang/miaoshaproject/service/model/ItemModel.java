@@ -26,6 +26,10 @@ public class ItemModel {
     @NotNull(message = "商品图片信息不能不填")
     private String imgUrl;
 
+    //使用聚合模型,将promoModel冗余进来
+    //如果promoModel,表示其拥有还未结束的秒杀活动
+    private PromoModel promoModel;
+
     public Integer getId() {
         return id;
     }
@@ -80,5 +84,13 @@ public class ItemModel {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public PromoModel getPromoModel() {
+        return promoModel;
+    }
+
+    public void setPromoModel(PromoModel promoModel) {
+        this.promoModel = promoModel;
     }
 }
